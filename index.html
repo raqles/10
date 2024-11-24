@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparador de Números</title>
+    <style>
+        /* Estilos básicos para a interface */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f9fb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        input:focus {
+            border-color: #0056b3;
+            outline: none;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background-color: #0056b3;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #004080;
+        }
+
+        .result-container {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .result-container p {
+            margin: 5px 0;
+            font-size: 16px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Comparador de Números</h1>
+        <form id="numberForm" class="form-container">
+            <label for="num1">Número 1:</label>
+            <input type="number" id="num1" name="num1" required placeholder="Digite o primeiro número">
+            
+            <label for="num2">Número 2:</label>
+            <input type="number" id="num2" name="num2" required placeholder="Digite o segundo número">
+            
+            <label for="num3">Número 3:</label>
+            <input type="number" id="num3" name="num3" required placeholder="Digite o terceiro número">
+            
+            <button type="submit" class="btn">Comparar</button>
+        </form>
+
+        <div id="result" class="result-container"></div>
+    </div>
+
+    <script>
+        // Validação de entrada e comparação dos números
+        document.getElementById('numberForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Captura dos valores dos inputs
+            const num1 = parseFloat(document.getElementById('num1').value);
+            const num2 = parseFloat(document.getElementById('num2').value);
+            const num3 = parseFloat(document.getElementById('num3').value);
+
+            // Verificar se os valores são válidos
+            if (isNaN(num1) || isNaN(num2) || isNaN(num3)) {
+                displayResult('Por favor, insira três números válidos.');
+                return;
+            }
+
+            // Encontrar o maior e menor número
+            const maior = Math.max(num1, num2, num3);
+            const menor = Math.min(num1, num2, num3);
+
+            // Comparar os números para verificar igualdade ou diferenças
+            let comparacao = '';
+
+            if (num1 === num2 && num2 === num3) {
+                comparacao = 'Todos os números são iguais.';
+            } else if (num1 !== num2 && num2 !== num3 && num1 !== num3) {
+                comparacao = 'Todos os números são diferentes.';
+            } else {
+                // Identificar quais números são iguais
+                const iguais = [];
+                if (num1 === num2) iguais.push(`Número 1 (${num1}) e Número 2 (${num2})`);
+                if (num2 === num3) iguais.push(`Número 2 (${num2}) e Número 3 (${num3})`);
+                if (num1 === num3) iguais.push(`Número 1 (${num1}) e Número 3 (${num3})`);
+                comparacao = `Existem números iguais: ${iguais.join(', ')}.`;
+            }
+
+            // Construir a mensagem de saída
+            const resultMessage = `
+                <p>Maior número: ${maior}</p>
+                <p>Menor número: ${menor}</p>
+                <p>${comparacao}</p>
+            `;
+
+            displayResult(resultMessage);
+        });
+
+        // Função para exibir o resultado
+        function displayResult(message) {
+            const resultContainer = document.getElementById('result');
+            resultContainer.innerHTML = message;
+            resultContainer.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
